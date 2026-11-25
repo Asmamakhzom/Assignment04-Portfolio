@@ -91,8 +91,9 @@ async function startServer() {
       });
 
 
-    app.listen(3000);
-       console.log("Server running at http://localhost:3000/");
+   app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
     } catch (error) {
         console.error("MongoDB connection failed:", error.message);
         process.exit(1);
