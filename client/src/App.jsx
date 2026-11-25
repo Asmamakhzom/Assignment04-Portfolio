@@ -1,16 +1,17 @@
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import Education from "./pages/Education";
-import Services from "./pages/Services";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Admin from "./pages/Admin";
-import ThankYou from "./pages/ThankYou";
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Education = lazy(() => import("./pages/Education"));
+const Services = lazy(() => import("./pages/Services"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Admin = lazy(() => import("./pages/Admin"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
 
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "./AuthContext";
@@ -49,7 +50,8 @@ function App() {
           )}
         </div>
       </nav>
-
+       
+    <Suspense fallback={<div>Loading page...</div>}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -74,7 +76,9 @@ function App() {
           }
         />
       </Routes>
+    </Suspense>
 
+    
       <footer className="footer">
         <p>&copy; 2026 Asma Makhzom. All rights reserved.</p>
 
