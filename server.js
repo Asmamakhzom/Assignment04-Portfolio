@@ -1,6 +1,9 @@
 //import express from "express";
 //var express = require("express");
 //var app = express();
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -23,6 +26,8 @@ dotenv.config();
 
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
@@ -36,16 +41,28 @@ app.use(cors({
 app.use(express.json());
 
 
-app.get("/", (req, res) => {
-    res.send("Welcome to my Portfolio Application!");
-});
-
-
 app.use('/api/contacts', contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/qualifications', educationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+
+app.use(express.static(path.join(__dirname, "client", "dist")));
+console.log("Frontend folder:", path.join(__dirname, "client", "dist"));
+console.log("Frontend index:", path.join(__dirname, "client", "dist", "index.html"));
+console.log("Frontend folder exists:", fs.existsSync(path.join(__dirname, "client", "dist")));
+console.log("Frontend index exists:", fs.existsSync(path.join(__dirname, "client", "dist", "index.html")));
+
+
+
+app.get("/{*splat}", (req, res, next) => {
+    res.sendFile(
+        path.join(__dirname, "client", "dist", "index.html"),
+        (err) => {
+            if (err) next(err);
+        }
+    );
+});
 
 async function startServer() {
     try {
