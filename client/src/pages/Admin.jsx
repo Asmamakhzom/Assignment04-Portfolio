@@ -26,8 +26,8 @@ function Admin() {
 
   const endpoint =
     activeType === "projects"
-      ? "http://localhost:3000/api/projects"
-      : "http://localhost:3000/api/qualifications";
+      ? "/api/projects"
+      : "/api/qualifications";
 
   const loadRecords = useCallback(async () => {
     setLoading(true);
@@ -35,10 +35,10 @@ function Admin() {
 
     try {
       const [projectResponse, educationResponse] = await Promise.all([
-        fetch("http://localhost:3000/api/projects", {
+        fetch("/api/projects", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        fetch("http://localhost:3000/api/qualifications", {
+        fetch("/api/qualifications", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -99,7 +99,11 @@ function Admin() {
         throw new Error(data.message || "Could not save record.");
       }
 
-      setMessage(editingId ? "Record updated successfully." : "Record added successfully.");
+      setMessage(
+        editingId
+          ? "Record updated successfully."
+          : "Record added successfully."
+      );
       setForm(emptyForm);
       setEditingId(null);
       await loadRecords();
@@ -170,31 +174,29 @@ function Admin() {
         <h1>Admin Dashboard</h1>
         <p>Manage your portfolio projects and education records.</p>
 
-        
-<div className="admin-tabs">
-  <button
-    type="button"
-    className={activeType === "projects" ? "active" : ""}
-    onClick={() => {
-      setActiveType("projects");
-      cancelEdit();
-    }}
-  >
-    Manage Projects
-  </button>
+        <div className="admin-tabs">
+          <button
+            type="button"
+            className={activeType === "projects" ? "active" : ""}
+            onClick={() => {
+              setActiveType("projects");
+              cancelEdit();
+            }}
+          >
+            Manage Projects
+          </button>
 
-  <button
-    type="button"
-    className={activeType === "education" ? "active" : ""}
-    onClick={() => {
-      setActiveType("education");
-      cancelEdit();
-    }}
-  >
-    Manage Education
-  </button>
-</div>
-
+          <button
+            type="button"
+            className={activeType === "education" ? "active" : ""}
+            onClick={() => {
+              setActiveType("education");
+              cancelEdit();
+            }}
+          >
+            Manage Education
+          </button>
+        </div>
 
         <h2>{editingId ? "Edit Record" : "Add New Record"}</h2>
 
