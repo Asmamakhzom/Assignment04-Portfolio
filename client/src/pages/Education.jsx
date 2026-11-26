@@ -12,7 +12,7 @@ function Education() {
     const fetchEducation = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/qualifications",
+          "/api/qualifications",
           {
             headers: {
               Authorization: `Bearer ${token}`
